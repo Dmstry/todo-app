@@ -1,5 +1,6 @@
 .container {
   max-width: 400px;
+  width: 90%;
   margin: 0 auto;
   padding: 20px;
   border: 2px solid #ddd;
@@ -13,22 +14,28 @@
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .input {
   flex-grow: 1;
-  padding: 8px;
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 16px;
+  width: 100%;
+  max-width: 250px;
 }
 
 .button {
-  padding: 8px 12px;
+  padding: 10px 15px;
   border: none;
   background-color: #007bff;
   color: white;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 16px;
 }
 
 .button:hover {
@@ -44,51 +51,114 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px;
+  padding: 10px;
   border-bottom: 1px solid #ddd;
+  flex-wrap: nowrap;
+  /* ✅ Не дозволяємо переноситися в колонку */
+  gap: 10px;
 }
 
+/* Чекбокс */
 .checkbox {
   width: 18px;
   height: 18px;
   cursor: pointer;
-  margin-right: 10px;
 }
 
+/* Текст задачі */
 .taskText {
   flex-grow: 1;
   text-align: left;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  max-width: 250px;
+  max-width: auto;
   cursor: pointer;
+  font-size: 16px;
+  flex-basis: 0;
 }
 
+/* Виконані завдання */
 .completed .taskText {
   text-decoration: line-through;
   color: gray;
 }
 
-.editInput {
-  flex-grow: 1;
-  padding: 4px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
+.disabledText {
+  cursor: not-allowed;
+  color: gray;
 }
 
+/* Поле редагування */
+.editInput {
+  flex-grow: 1;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  max-width: 80%;
+  /* ✅ Обмежуємо ширину редагування */
+}
+
+.editInput:disabled {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
+}
+
+/* Кнопка видалення */
 .deleteButton {
   background-color: red;
-  margin-left: 10px;
   padding: 6px 10px;
   border-radius: 4px;
   cursor: pointer;
   color: white;
   border: none;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
 }
 
 .deleteButton:hover {
   background-color: darkred;
+}
+
+/* 📱 Адаптація для мобільних пристроїв */
+@media (max-width: 600px) {
+  .container {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .inputWrapper {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .input {
+    max-width: 100%;
+    font-size: 14px;
+  }
+
+  .button {
+    width: 100%;
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .item {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    flex-wrap: nowrap;
+  }
+
+  .editInput {
+    max-width: 80%;
+    /* ✅ Зменшуємо розмір для мобільних */
+    font-size: 14px;
+  }
+
+  .deleteButton {
+    padding: 4px 8px;
+    font-size: 14px;
+  }
 }

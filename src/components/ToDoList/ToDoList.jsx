@@ -38,7 +38,8 @@ export default function ToDoList() {
     setTasks(tasks.filter(task => task.id !== id));
   };
 
-  const startEditing = (id, text) => {
+  const startEditing = (id, text, completed) => {
+    if (completed) return; // Забороняємо редагування виконаних завдань
     setEditingTaskId(id);
     setEditingText(text);
   };
@@ -100,11 +101,14 @@ export default function ToDoList() {
                 onBlur={() => saveEdit(task.id)}
                 onKeyDown={e => handleEditKeyDown(e, task.id)}
                 autoFocus
+                disabled={task.completed} // Забороняємо редагування виконаних завдань
               />
             ) : (
               <span
-                className={css.taskText}
-                onClick={() => startEditing(task.id, task.text)}
+                className={`${css.taskText} ${
+                  task.completed ? css.disabledText : ''
+                }`}
+                onClick={() => startEditing(task.id, task.text, task.completed)}
               >
                 {task.text}
               </span>
