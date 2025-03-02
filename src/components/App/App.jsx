@@ -5,7 +5,7 @@ export default function App() {
   return (
     <>
       <div className={css.container}>
-        <h1>ToDo List</h1>
+        <h1>Список задач</h1>
         <ToDoList />
       </div>
     </>

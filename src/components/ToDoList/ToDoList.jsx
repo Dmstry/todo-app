@@ -6,6 +6,8 @@ export default function ToDoList() {
     return JSON.parse(localStorage.getItem('tasks')) || [];
   });
   const [task, setTask] = useState('');
+  const [editingTaskId, setEditingTaskId] = useState(null);
+  const [editingText, setEditingText] = useState('');
 
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -36,6 +38,32 @@ export default function ToDoList() {
     setTasks(tasks.filter(task => task.id !== id));
   };
 
+  const startEditing = (id, text) => {
+    setEditingTaskId(id);
+    setEditingText(text);
+  };
+
+  const handleEditChange = e => {
+    setEditingText(e.target.value);
+  };
+
+  const saveEdit = id => {
+    if (editingText.trim()) {
+      setTasks(
+        tasks.map(task =>
+          task.id === id ? { ...task, text: editingText } : task
+        )
+      );
+    }
+    setEditingTaskId(null);
+  };
+
+  const handleEditKeyDown = (e, id) => {
+    if (e.key === 'Enter') {
+      saveEdit(id);
+    }
+  };
+
   return (
     <div className={css.container}>
       <div className={css.inputWrapper}>
@@ -57,9 +85,30 @@ export default function ToDoList() {
             className={`${css.item} ${task.completed ? css.completed : ''}`}
             key={task.id}
           >
-            <span className={css.taskText} onClick={() => toggleTask(task.id)}>
-              {task.text}
-            </span>
+            <input
+              type="checkbox"
+              className={css.checkbox}
+              checked={task.completed}
+              onChange={() => toggleTask(task.id)}
+            />
+            {editingTaskId === task.id ? (
+              <input
+                className={css.editInput}
+                type="text"
+                value={editingText}
+                onChange={handleEditChange}
+                onBlur={() => saveEdit(task.id)}
+                onKeyDown={e => handleEditKeyDown(e, task.id)}
+                autoFocus
+              />
+            ) : (
+              <span
+                className={css.taskText}
+                onClick={() => startEditing(task.id, task.text)}
+              >
+                {task.text}
+              </span>
+            )}
             <button
               className={css.deleteButton}
               onClick={() => removeTask(task.id)}
